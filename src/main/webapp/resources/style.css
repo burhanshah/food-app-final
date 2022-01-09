@@ -1,0 +1,686 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;700;800&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    scroll-behavior: smooth;
+}
+
+
+a
+        {
+        color: white;
+        text-decoration: none;
+        }
+    
+ 
+    
+
+#left, #mid,#right 
+        {
+         /* border: 2px solid yellow; */
+        }
+
+
+
+
+#right li, #mid li, #right li
+        {
+        display: inline-block;
+        margin:10px 25px;
+         }
+
+
+    #left img 
+        {
+        height:42px;
+        margin:0px;
+        width: 60px;
+        }
+
+
+#navbar 
+        {
+            /* position: fixed; */
+        padding: 10px;
+        display:flex ; 
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        background-color: rgb(0, 0, 0);
+        width: 100%;
+        font-family: 'Baloo Bhaijaan 2', cursive;
+        font-weight: 700px;
+        }
+
+
+#logo_des {
+    color: white;
+    font-family: 'Baloo Bhaijaan 2', cursive;
+    font-weight: 800px;
+    font-size: 30px;
+    position:absolute;
+    }
+
+
+#right li a:hover, #mid li a:hover, #right li a:hover
+
+     {
+         color:orangered;
+        text-decoration: underline;
+        font-weight: bold;
+        transition: 0.4s;
+     }
+
+
+
+
+/* MID SECTION */
+
+#mid-container
+     {
+        
+         /* border:2px solid yellow; */
+         background-image: url("/images/slider/bg-1.jpg");
+         background-repeat: no-repeat;
+         /* margin-top: 50px; */
+        background-size: cover;
+        height: 700px;
+     }
+
+
+h1, .para1, .para2 {font-family: 'Baloo Bhaijaan 2', cursive;}
+
+ .tagLine h1 {
+    position: absolute;
+    font-size: 85px;
+    color: white;
+    /* border: 2px solid white; */
+    display: inline-block;
+    right: 158px;
+    top: 230px;
+
+ }    
+ 
+
+ .para1 {
+    /* border: 2px solid white; */
+     position: absolute;
+     width: 430px;
+     right:20px;
+     color: white;
+    display: inline-block;
+    right:100px;
+     top:330px;
+     font-size: 50px;
+
+
+ }
+
+ .para2 {
+    /* border: 2px solid white; */
+     position: absolute;
+     width: 430px;
+     right:20px;
+     color: white;
+    display: inline-block;
+    right:12px;
+     top:390px;
+     font-size: 50px;
+
+
+ }
+
+
+
+
+
+ /* ORDER SECTION */
+
+ 
+ 
+#sec1{
+    text-decoration-color: black;
+     text-decoration:underline;
+    /* border:2px solid peru; */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 30px;
+    color:white;
+
+}
+
+#sec2{
+    /* border:2px solid pink; */
+    align-self: center;
+
+}
+ .rest_link {
+     display: inline;
+
+     /* border:2px solid yellow; */
+ }
+
+ .rest_link img {
+     border-radius: 15px;
+     border:2px solid orangered;
+     height: 200px;
+     width:210px;
+     margin:10px 25px;
+ }
+
+ .rest_link img:hover{
+    opacity: 80%;
+    transition: 0.6s;
+
+ }
+
+
+
+
+ /* RESTAUANT SECTION */
+
+
+ #menu_container 
+ {
+     
+     /* border:2px solid green; */
+     color: black;
+ }
+
+
+
+
+
+
+ #menu_container
+ {
+     padding: 20px;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+ }
+  #menu_container h1
+ {
+     /* text-decoration-color: black; */
+     text-decoration:underline;
+     margin-top: 20px;
+    /* border:2px solid peru; */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 50px;
+    color: orangered;
+ }
+
+ #heading span {
+                border: 2px solid white;
+                border-radius: 10px;
+                background-color: orangered;
+                color: white;
+                width: 200px;
+                text-align: center;
+ }
+
+
+ #heading
+ {
+     /* border:2px solid pink; */
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     font-size: 40px;
+     font-weight: bold;
+ }
+
+ 
+
+ #menu_tab {
+     
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
+     font-size: 18px;
+ }
+ #menu_tab div{
+     border:2px solid orangered;
+     border-radius: 12px;
+     
+     width:200px;
+     margin-top: 5px;
+ }
+
+ #menu_tab {
+
+     font-size: 25px;
+ }
+
+ #menu_tab input{
+     display: inline-block;
+     width:160px;
+    margin-top: 5px;
+}
+
+ .catg {
+     text-decoration: underline;
+     margin-top: 25px;
+     margin-bottom: 5px;
+     font-size: 20px;
+     font-weight: bold;
+ }
+
+.btn {
+   display: flex;
+   justify-content: flex-end;
+
+}
+
+ .btn input {
+    margin: 20px 10px 0 10px;
+     width: 130px;
+     height: 30px;
+     font-size: 15px;
+     font-weight: bold;
+     background-color: orangered;
+     color: white;
+     border: white;
+     border-radius: 5px;
+     cursor: pointer;
+ }
+
+
+ .btn input:hover {
+     background-color: white;
+     border:2px solid orangered;
+     color:orangered;
+ }
+
+
+
+ #client {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     width: 100%;
+     height: 100vh;
+     border:2px solid green;
+     background-color:black;
+     color: white;
+ }
+
+
+ #client h1
+ {
+    text-decoration-color: black;
+    text-decoration:underline;
+     margin-top: 20px;
+    /* border:2px solid peru; */
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    width: 100%;
+ }
+
+ 
+
+
+
+ form {
+     display: flex;
+     flex-direction: column;
+     /* border:2px solid purple; */
+     border-radius: 8px;
+     padding: 20px;
+     font-size: 30px;
+     font-weight: bold;
+
+ }
+
+ #field{
+     /* border:2px solid pink; */
+        width: 880px;
+}
+
+
+#field>div {
+    display: inline-block;
+    width:200px;
+    /* border:2px solid green; */
+}
+
+ #field>div>input {
+     margin: 5px 5px;
+     width:650px;
+     height: 50px;
+     font-size: 25px;
+     padding: 10px;
+     border:2px solid orangered;
+     border-radius: 8px;
+
+ }
+
+ 
+
+/* ADMIN SECTION */
+
+ #admin, #user, #order {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* border:2px solid green; */
+}
+
+
+#admin h1, #user h1, #order h1
+{
+    text-decoration-color: black;
+     text-decoration:underline;
+    margin-top: 20px;
+   /* border:2px solid peru; */
+   margin-bottom: 20px;
+   text-align: center;
+   font-size: 50px;
+   color: orangered;
+   width: 100%;
+}
+
+
+#pannel {
+    margin: 15px 0 0 30px;
+    /* border:2px solid yellow; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 80%;
+}
+
+
+#pannel a{
+    color: black;
+}
+
+
+.opt {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#pannel .opt {
+                border:2px solid orangered;
+                border-radius: 5px;
+                width:180px;
+                height:180px;
+                text-align: center;
+}
+
+.opt i {
+    font-size: 80px;
+    color:orangered;
+}
+
+.opt span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#pannel a:hover, .opt:hover {
+    border-color: black;
+    color:blue;
+    transition: 0.6s;
+}
+
+
+
+
+/* CATEGORIE SECTION */
+
+#categories {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    /* border:2px solid red; */
+}
+
+
+#categories h1
+{
+    text-decoration-color: black;
+     text-decoration:underline;
+    margin-top: 20px;
+   /* border:2px solid peru; */
+   /* margin-bottom: 20px; */
+   text-align: center;
+   font-size: 50px;
+   color: rgb(240, 118, 18);
+   width: 100%;
+}
+
+
+#categories a{
+    color: black;
+}
+
+
+#cat_pannel
+{
+    /* border:2px solid red; */
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 5px;
+    
+
+}
+
+
+#cat_pannel div{
+    border-radius: 15px;
+}
+
+
+#cat_pannel a {
+    color: white;
+}
+
+
+
+.catg_1 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/burger.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_2 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/pizza.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_3 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/kebab.jpg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_4 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/karahi.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+
+
+.catg_5 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/sajji.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_6 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/nihari.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_7 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/tikka.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_8 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/biryani.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+
+.catg_9 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/chowmein.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+.catg_10 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/sushi.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_11 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/broast.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_12 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/mousse.jpg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_13 {
+    border:2px solid yellow;
+    background-image: url("/images/slider/shawarma.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_14 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/shrimps.jpeg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.catg_15 {
+    border:2px solid orangered;
+    background-image: url("/images/slider/fish.jpg");
+    background-repeat: no-repeat;
+    /* margin-top: 50px; */
+   background-size: cover;
+   height: 150px;
+   width:220px;
+}
+
+
+.ctg:hover {
+    opacity: 80%;
+    transition: 0.6s;
+}
+#price {
+    position: absolute;
+    text-align: center;
+    width:60px;
+    margin: 10px 7px;
+    border:1px solid white;
+    border-radius: 8px;
+    background-color:orangered;
+    color: white;
+    font-weight: bold;
+}
+
+textarea{
+    margin: 2px 5px;
+     width:860px;
+     /* height: 50px; */
+     font-size: 25px;
+     /* padding: 10px; */
+     border:2px solid orangered;
+     border-radius: 8px;
+}
