@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.foodapp.dao.OrderDao;
+import com.foodapp.dao.util.DBManager;
 import com.foodapp.model2.Order;
+import com.foodapp.model2.Restaurant;
+import com.foodapp.model2.User;
 
 /**
  * Servlet implementation class CheckoutServlet
@@ -36,27 +39,29 @@ public class CheckoutServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 
-		Object userName = request.getSession().getAttribute("userName");
-
-		Order order = null;
+		Order order = (Order) request.getSession().getAttribute("order");
 		// When user want to add order
 
 		String address = request.getParameter("address");
 		String contact = request.getParameter("contact");
 		String comments = request.getParameter("comments");
-		String orderId = request.getParameter("orderId");
-		System.out.println(orderId);
-
-		order = OrderDao.getLastOrderofUser(userName.toString());
-
+		
 		if (order != null) {
 			order.setAddress(address);
 			order.setContact(contact);
 			order.setComments(comments);
-			OrderDao.placeOrder(order);
+//			Restaurant restaurantByName = DBManager.getRestaurantByName(request.getSession().getAttribute("resname").toString());
+//			int restid = restaurantByName.getId();
+//			order.setRestaurantId(restid);
+			int orderId = OrderDao.placeOrder(order);
+			if(orderId > -1) {
+				order.setOrderId(orderId);
+			}
 		}
 
-		// request.setAttribute("order", orders);
+		if(order.getOrderId() > 0) {
+			request.setAttribute("orderStatus", "Order placed successful, check your order at `Order Status`");
+		}
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/WelcomeUser.jsp");
 		dispatcher.forward(request, response);
 

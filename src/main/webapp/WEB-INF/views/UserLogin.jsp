@@ -24,7 +24,7 @@
 					<li><a href="home">Home</a></li>
 					<!--  <li><a href="#">Forgot Password</a></li> -->
 					<li><a href="#">Help</a></li>
-					<li><a href="#">Contact Us</a></li>
+					<li><a href="home#client">Contact Us</a></li>
 				</ul>
 			</div>
 

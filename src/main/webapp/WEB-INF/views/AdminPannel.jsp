@@ -13,13 +13,17 @@
 	integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
 	crossorigin="anonymous" />
 <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+<link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
 <link rel="stylesheet" href="resources/style.css">
+<link rel="stylesheet" href="../resources/style.css">
 </head>
 <body>
 	<header>
 		<nav id="navbar">
 			<div id="left">
-				<img src="images/logo.png" alt="Logo"> <span id="logo_des"><strong>IUnTummy</strong></span>
+				<img src="images/logo.png" alt="Logo" onerror='this.style.display = "none"'>
+				<img src="../images/logo.png" alt="Logo" onerror='this.style.display = "none"'> 
+				<span id="logo_des"><strong>IUnTummy</strong></span>
 			</div>
 
 			<div id="mid">
@@ -51,11 +55,11 @@
 
 		<div id="pannel">
 
-			<a href="#">
+			<a href="RestaurantMenuUpdate?name=<%=((Owner) session.getAttribute("user")).getRestaurant().getName() %>">
 				<div class="opt">
-					<i class="fas fa-plus-circle"></i> <span>Add/Update Menu</span>
+					<i class="fas fa-plus-circle"></i> <span>Update Menu</span>
 				</div>
-			</a> <a href="#">
+			</a> <a href="RestaurantMenuDelete?name=<%=((Owner) session.getAttribute("user")).getRestaurant().getName() %>">
 				<div class="opt">
 					<i class="fas fa-minus-circle"></i> <span>Remove Menu</span>
 				</div>
@@ -80,9 +84,9 @@
 				<div class="opt">
 					<i class="fas fa-hamburger"></i> <span>View Order</span>
 				</div>
-			</a> <a href="#">
+			</a> <a href="RestaurantMenuAdd?name=<%=((Owner) session.getAttribute("user")).getRestaurant().getName() %>">
 				<div class="opt">
-					<i class="fas fa-folder-minus"></i> <span>Remove Order</span>
+					<i class="fas fa-folder-plus"></i> <span>Add Menu</span>
 				</div>
 			</a> <a href="#">
 				<div class="opt">

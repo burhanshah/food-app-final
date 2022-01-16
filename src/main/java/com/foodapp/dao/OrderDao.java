@@ -14,19 +14,13 @@ import com.foodapp.model2.Restaurant;
 import com.foodapp.model2.User;
 
 public class OrderDao {
-	private static List<Order> orders = new ArrayList<>();
 
-	public static List<Order> getAllOrders() {
-		return orders;
-	}
-	
-	public static Order addOrder(User user, Map<String, String[]> parameterMap, String resname) {
+	public static Order createOrder(User user, Map<String, String[]> parameterMap, String resname) {
 		Restaurant res = DBManager.getRestaurantByName(resname);
 
 		// Create new order, this is in memory, once order is placed and user checkout,
 		// remove it from this list and add to db
 		Order order = new Order();
-		order.setOrderId(orders.size() + 1);
 		order.setResName(resname);
 		order.setRestaurantId(res.getId());
 		order.setUser(user.getUserName());
@@ -42,8 +36,6 @@ public class OrderDao {
 		order.setOrderItems(orderMenu);
 
 		order.setTotalPrice(calculatePrice(orderMenu));
-
-		orders.add(order);
 
 		return order;
 
@@ -67,8 +59,8 @@ public class OrderDao {
 		}
 		return p;
 	}
-	
-	// List<Item> veg => [('dal fry', 56), ('chana dal', 67) ... ) 
+
+	// List<Item> veg => [('dal fry', 56), ('chana dal', 67) ... )
 	// ["1", ""]
 	private static List<FoodItem> calculateMenu(List<FoodItem> veg, String[] qty) {
 		List<FoodItem> items = new ArrayList<>();
@@ -91,61 +83,65 @@ public class OrderDao {
 
 	}
 
-	public static List<Order> getOrderByUser(String username) {
-		List<Order> userOrders = new ArrayList<>();
-		for(Order order : orders) {
-			if(order.getUser().equalsIgnoreCase(username)) {
-				userOrders.add(order);
-			}
-		}
-		return userOrders;
-	}
+//	public static List<Order> getOrderByUser(String username) {
+//		List<Order> userOrders = new ArrayList<>();
+//		for (Order order : orders) {
+//			if (order.getUser().equalsIgnoreCase(username)) {
+//				userOrders.add(order);
+//			}
+//		}
+//		return userOrders;
+//	}
 
 	public void addOrderDetails(Map<String, String[]> parameterMap) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	public static Order getLastOrderofUser(String userName) {
-		List<Order> ordersOfUser = getOrderByUser(userName);
-		if(!ordersOfUser.isEmpty()) {
-			return ordersOfUser.get(ordersOfUser.size() - 1);
-		}
-		return null;
-	}
+//	public static Order getLastOrderofUser(String userName) {
+//		List<Order> ordersOfUser = getOrderByUser(userName);
+//		if (!ordersOfUser.isEmpty()) {
+//			return ordersOfUser.get(ordersOfUser.size() - 1);
+//		}
+//		return null;
+//	}
 
-	public static void removePendingOrdersOfUser(User user) {
-		if(user == null) {
-			return;
-		}
-		Iterator<Order> orderItr = orders.iterator();
-		while(orderItr.hasNext()) {
-			Order order = orderItr.next();
-			if(order.getUser().equalsIgnoreCase(user.getUserName()) && order.getUserId() == user.getUserId()) {
-				orderItr.remove();
-			}
-		}
-	}
+//	public static void removePendingOrdersOfUser(User user) {
+//		if (user == null) {
+//			return;
+//		}
+//		Iterator<Order> orderItr = orders.iterator();
+//		while (orderItr.hasNext()) {
+//			Order order = orderItr.next();
+//			if (order.getUser().equalsIgnoreCase(user.getUserName()) && order.getUserId() == user.getUserId()) {
+//				orderItr.remove();
+//			}
+//		}
+//	}
 
-	public static void placeOrder(Order order) {
-		if(order != null) {
+	public static int placeOrder(Order order) {
+		if (order != null) {
 			// Insert order to DB
-			DBManager.addOrder(order);
+			return DBManager.addOrder(order);
 		}
+		return -1;
 	}
 
-	public static List<Order> getAllOrdersForAdmin(Object user) {
-		if(user instanceof Owner) {
-			return DBManager.getAllOrderForAdmin(((Owner)user).getUserName());
+	public static List<Order> getAllOrdersAnyUser(Object user) {
+		if (user instanceof Owner) {
+			return DBManager.getAllOrderForAdmin(((Owner) user).getUserName());
+		} else if (user instanceof User) {
+			return DBManager.getAllOrderOfUser(((User) user).getUserName());
 		}
 		return null;
 	}
 
-	public static List<Order> getAllOrdersOfUser(String userName) {
-		if(userName != null && !userName.isBlank()) {
-			return DBManager.getAllOrderOfUser(userName);
-		}
-		return orders;
-	}
+
+//	public static List<Order> getAllOrdersOfUser(String userName) {
+//		if (userName != null && !userName.isBlank()) {
+//			return DBManager.getAllOrderOfUser(userName);
+//		}
+//		return orders;
+//	}
 
 }

@@ -54,24 +54,16 @@ public class UserServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		 String username, password, email, role, first_name, last_name, address; 
+		 String username, password, email, role; 
 		 
 		 username=request.getParameter("txt_username");
 	     password=request.getParameter("txt_password"); 
 	     email=request.getParameter("txt_email");
-	     first_name=request.getParameter("txt_firstname");
-	     last_name=request.getParameter("txt_lastname");
-	     address=request.getParameter("txt_address");
-	     //role="customer";
+	     role="customer";
 	     
-			/*
-			 * String dburl="jdbc:mysql://localhost:3306/mysql_database"; String
-			 * dbuname="webstudent"; String dbpwd ="webstudent";
-			 */
-	     
-	     String dburl="jdbc:mysql://localhost:3306/food_db"; 
-	     String dbuname="root";    
-	     String dbpwd ="root";
+	     String dburl="jdbc:mysql://localhost:3306/mysql_database"; 
+	     String dbuname="webstudent";    
+	     String dbpwd ="webstudent";
 	        
 	     try
 	        {
@@ -80,7 +72,7 @@ public class UserServlet extends HttpServlet {
 	            /*out.println ("database successfully opened.");*/
 	            PreparedStatement pstmt=null; 
 	            
-	            pstmt=con.prepareStatement("SELECT * FROM user WHERE email=? "); 
+	            pstmt=con.prepareStatement("SELECT * FROM login WHERE email=? "); 
 	            pstmt.setString(1,email); 
 	            ResultSet rs=pstmt.executeQuery(); 
 	           
@@ -105,14 +97,11 @@ public class UserServlet extends HttpServlet {
 	            }
 	            else
 	            {
-	                pstmt=con.prepareStatement("INSERT INTO user (username, password, email, first_name, last_name, address) VALUES(?,?,?,?,?,?)"); 
+	                pstmt=con.prepareStatement("INSERT INTO login (username, password, email, role) VALUES(?,?,?,?)"); 
 	                pstmt.setString(1,username);
 	                pstmt.setString(2,password);
 	                pstmt.setString(3,email);           
-	                //pstmt.setString(4,role);
-	                pstmt.setString(4,first_name);
-	                pstmt.setString(5,last_name);
-	                pstmt.setString(6,address);
+	                pstmt.setString(4,role);
 	                pstmt.executeUpdate(); 
 	                
 	                request.setAttribute("Msg", "register successfully please login account");

@@ -229,6 +229,7 @@ public class DBManager {
 					restaurant.setName(result.getString("name"));
 					restaurant.setRating(result.getFloat("rating"));
 					restaurant.setAddress(result.getString("address"));
+					restaurant.setId(result.getInt("idrestaurant"));
 				}
 				String category = result.getString("food_category").toUpperCase();
 				FoodItem item = new FoodItem(result.getInt("idfood"), result.getString("item_name"),
@@ -244,31 +245,33 @@ public class DBManager {
 		return restaurant;
 	}
 
-	public static void addOrder(Order order) {
-
+	public static int addOrder(Order order) {
+		int orderId = -1;
 		try (Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
 			// Add to order
 			int offerId = getOfferId(order, connection);
 			// Insert into order table
 			String sql = "INSERT INTO `food_db`.`order` (`user_iduser`, `delivery_address`, `order_time`, "
-					+ "`restaurant_idrestaurant`, `offers_idoffers`) VALUES " + "(?, ? , ?, ?, ?)";
+					+ "`restaurant_idrestaurant`, `offers_idoffers`, `delivery_instruction`, `contact`) VALUES " + "(?, ? , ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setInt(1, order.getUserId());
 			pstmt.setString(2, order.getAddress());
 			pstmt.setTimestamp(3, new Timestamp(new Date().getTime()));
 			pstmt.setInt(4, order.getRestaurantId());
 			pstmt.setInt(5, offerId);
+			pstmt.setString(6, order.getComments());
+			pstmt.setString(7, order.getContact());
 
 			// Insert order
 			pstmt.execute();
 
 			// get the order which was inserted above
-			int orderId = getLastOrderIdOfUser(order, connection);
+			orderId = getLastOrderIdOfUser(order, connection);
 			// update order id from DB to object
 			order.setOrderId(orderId);
 			if (orderId == Integer.MIN_VALUE) {
 				System.out.println("Something went wrong, cannot fetch order for user " + order.getUser());
-				return;
+				return -1;
 			}
 
 			addOrderItems(order, connection);
@@ -277,6 +280,7 @@ public class DBManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return orderId;
 
 	}
 
@@ -294,9 +298,9 @@ public class DBManager {
 		int userId = order.getUserId();
 		int restaurantId = order.getRestaurantId();
 		for (FoodItem item : items) {
-			String sql = "INSERT INTO `food_db`.`order_items` (`item_name`, `item_price`, `item_category`, `item_qty` "
-					+ "`order_idorder`, `order_user_iduser`, `order_restaurant_idrestaurant`) "
-					+ "values (?, ?, ?, ?, ?, ?)";
+			String sql = "INSERT INTO `food_db`.`order_items` (`item_name`, `item_price`, `item_category`, `item_qty`, "
+					+ " `order_idorder`, `order_user_iduser`, `order_restaurant_idrestaurant`) "
+					+ "values (?, ?, ?, ?, ?, ?, ?)";
 			try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 				pstmt.setString(1, item.getName());
 				pstmt.setFloat(2, item.getPrice());
@@ -341,7 +345,7 @@ public class DBManager {
 		order.setAddress("address1");
 		order.setComments("comment1");
 		order.setContact("6384384");
-		Restaurant res = getRestaurantById(1);
+		Restaurant res = getRestaurantById(2);
 		order.setRestaurantId(res.getId());
 		order.setResName(res.getName());
 		order.setUser("user1");
@@ -485,6 +489,8 @@ public class DBManager {
 				order.setAddress(result.getString("delivery_address"));
 				order.setRestaurantId(result.getInt("restaurant_idrestaurant"));
 				order.setUserId(result.getInt("user_iduser"));
+				order.setComments(result.getString("delivery_instruction"));
+				order.setContact(result.getString("contact"));
 				order.setOrderId(orderId);
 			}
 		} catch (SQLException e) {
@@ -542,6 +548,188 @@ public class DBManager {
 			e.printStackTrace();
 		}
 		return orders;
+	}
+
+	public static void updateMenuForRestaurant(List<FoodItem> itemsToBeUpdated, String restaurantId) {
+		if(itemsToBeUpdated == null || itemsToBeUpdated.isEmpty()) {
+			// nothing to update
+			return;
+		}
+		try(Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			String sql = "UPDATE `food_db`.`menu` AS menu SET `menu`.`price` = ? "
+					+ "WHERE `menu`.`food_item_idfood` = ? and `menu`.`restaurant_idrestaurant` = ?";
+			for(FoodItem item : itemsToBeUpdated) {
+				try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+					pstmt.setFloat(1, item.getPrice());
+					pstmt.setInt(2, item.getId());
+					pstmt.setInt(3, Integer.parseInt(restaurantId));
+					pstmt.executeUpdate();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void deleteMenuForRestaurant(List<Integer> toBeDeletedFoodItems, String restaurantId) {
+		if(toBeDeletedFoodItems == null || toBeDeletedFoodItems.isEmpty()) {
+			// nothing to update
+			return;
+		}
+		// delete the food item for given restaurant
+		try(Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			String sql = "DELETE FROM `food_db`.`menu` AS menu "
+					+ "WHERE `menu`.`food_item_idfood` = ? and `menu`.`restaurant_idrestaurant` = ?";
+			for(Integer item : toBeDeletedFoodItems) {
+				try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+					pstmt.setInt(1, item);
+					pstmt.setInt(2, Integer.parseInt(restaurantId));
+					pstmt.executeUpdate();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * For the given menu items, this method add the food items in the restaurant
+	 * menu, if it is not already added for given restaurant
+	 * 
+	 * @param menu
+	 * @param restaurantId
+	 */
+	public static void addMenuItemsForRestaurant(Menu menu, String restaurantId) {
+		if (menu == null || menu.getVeg().size() + menu.getNonveg().size() + menu.getBread().size()
+				+ menu.getBeverage().size() == 0) {
+			// nothing to add
+			return;
+		}
+		addFoodItems(menu.getVeg(), Integer.parseInt(restaurantId), "VEG");
+		addFoodItems(menu.getNonveg(), Integer.parseInt(restaurantId), "NON-VEG");
+		addFoodItems(menu.getBread(), Integer.parseInt(restaurantId), "BREAD");
+		addFoodItems(menu.getBeverage(), Integer.parseInt(restaurantId), "BEVERAGE");
+	}
+
+	/**
+	 * This method insert the list of food item in the menu for the given restaurant under various category.
+	 * If item is already there in the menu of restaurant, it will not add/update anything.
+	 * If item is there in food_item but not in restaurant menu, it will add the item to restaurant menu.
+	 * If item is not there in food_item, it will add in both food_item and menu table.
+	 * @param items
+	 * @param restaurantId
+	 * @param category
+	 */
+	private static void addFoodItems(List<FoodItem> items, int restaurantId, String category) {
+		if(items.isEmpty()) {
+			return;
+		}
+		try (Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			for (FoodItem item : items) {
+				int id = getFoodItemId(item.getName(), category, 0);
+				if(id == -1) {
+					System.out.println("Unable to add food item : " + item.getName());
+					continue;
+				}
+				if(itemAlreadyInMenu(id, restaurantId)) {
+					continue;
+				}
+				String sql = "INSERT INTO `food_db`.`menu` (`food_item_idfood`, `restaurant_idrestaurant`, `price`) "
+						+ "VALUES (?, ?, ?)";
+				try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+					pstmt.setInt(1, id);
+					pstmt.setInt(2, restaurantId);
+					pstmt.setFloat(3, item.getPrice());
+					pstmt.execute();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * This method checks if given food item is already there in restaurant menu.
+	 * If item is there in the menu, it returns true, otherwise false
+	 * @param foodItemId
+	 * @param restaurantId
+	 * @return
+	 */
+	private static boolean itemAlreadyInMenu(int foodItemId, int restaurantId) {
+		try(Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			String sql = "SELECT idmenu from `food_db`.`menu` where `food_item_idfood` = ? and `restaurant_idrestaurant` = ? limit 1";
+			try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setInt(1, foodItemId);
+				pstmt.setInt(2, restaurantId);
+				ResultSet result = pstmt.executeQuery();
+				return result.first();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * This method get the id of food item, it search for food name and food
+	 * category in food_item table. If food item is not there, it will insert new
+	 * record and give the newly added record id
+	 * 
+	 * @param name
+	 * @param category
+	 * @param times
+	 * @return
+	 */
+	private static int getFoodItemId(String name, String category, int times) {
+		int id = -1;
+		try(Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			String sql = "select idfood from `food_db`.`food_item` where item_name = ? and food_category = ? limit 1";
+			try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setString(1, name);
+				pstmt.setString(2, category);
+				ResultSet result = pstmt.executeQuery();
+				boolean found = result.first();
+				if(found) {
+					return result.getInt("idfood");
+				} else {
+					// try 5 time to insert, if not added
+					if(times < 5) {
+						return insertNewFoodItem(name, category, times+1);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	
+	/**
+	 * Method to insert new food item in to food_item table, it returns id of newly added record
+	 * @param name
+	 * @param category
+	 * @param i
+	 * @return
+	 */
+	private static int insertNewFoodItem(String name, String category, int i) {
+		try(Connection connection = DriverManager.getConnection(CONN_STR, DB_USER, DB_USER_PASSWORD)) {
+			String sql = "INSERT into `food_db`.`food_item` (`item_name`, `food_category`) VALUES (?, ?) ";
+			try(PreparedStatement pstmt = connection.prepareStatement(sql)) {
+				pstmt.setString(1, name);
+				pstmt.setString(2, category);
+				pstmt.execute();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return getFoodItemId(name, category, i);
 	}
 
 }

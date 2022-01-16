@@ -42,7 +42,7 @@ public class OrderServlet extends HttpServlet {
 		Object userType = request.getSession().getAttribute("userType");
 		Object user = request.getSession().getAttribute("user");
 		if (UserType.ADMIN.toString().equalsIgnoreCase(userType.toString())) {
-			request.setAttribute("allorders", OrderDao.getAllOrdersForAdmin(user));
+			request.setAttribute("allorders", OrderDao.getAllOrdersAnyUser(user));
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/allorders.jsp");
 			dispatcher.forward(request, response);
 			return;
@@ -59,13 +59,18 @@ public class OrderServlet extends HttpServlet {
 		Order order = null;
 		// When user want to add order
 		if (parameterMap.size() > 0) {
-			order = OrderDao.addOrder((User) user, parameterMap, resname);
+			order = OrderDao.createOrder((User) user, parameterMap, resname);
+			// set to request attribute
 			request.setAttribute("order", order);
+			// set to session, this will be used at checkout
+			request.getSession().setAttribute("order", order);
+//			request.getSession().setAttribute("resname", order.getResName());
+//			request.getSession().setAttribute("restid", order.getRestaurantId());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/order.jsp");
 			dispatcher.forward(request, response);
 		} else {
 			// When user want to see his own order
-			request.setAttribute("allorders", OrderDao.getAllOrdersOfUser(userName.toString()));
+			request.setAttribute("allorders", OrderDao.getAllOrdersAnyUser(user));
 			RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/views/allorders.jsp");
 			dispatcher.forward(request, response);
 			return;

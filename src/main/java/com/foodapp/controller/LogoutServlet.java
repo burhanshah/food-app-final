@@ -38,7 +38,7 @@ public class LogoutServlet extends HttpServlet {
 		// Remove all pending orders, if user log out before checkin
 		User user = (User) request.getSession().getAttribute("user");
 		if(user != null) {
-			OrderDao.removePendingOrdersOfUser(user);
+			//OrderDao.removePendingOrdersOfUser(user);
 		}
 
 		//Clear all session data

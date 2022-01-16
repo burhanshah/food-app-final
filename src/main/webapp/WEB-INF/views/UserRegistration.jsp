@@ -37,20 +37,8 @@
 					<td><input type="password" name="txt_password"/></td>
 				</tr>
 				<tr>
-					<td>firstname:</td>
-					<td><input type="text" name="txt_firstname"/></td>
-				</tr>
-				<tr>
-					<td>lastname:</td>
-					<td><input type="text" name="txt_lastname"/></td>
-				</tr>
-				<tr>
 					<td>Email:</td>
 					<td><input type="text" name="txt_email"/></td>
-				</tr>
-				<tr>
-					<td>Address:</td>
-					<td><input type="text" name="txt_address"/></td>
 				</tr>
 				
 				<!-- <input type="hidden" name="role" value="txt_customer"> -->

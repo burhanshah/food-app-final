@@ -49,6 +49,7 @@
 		<h4>
 			${userName}
 		</h4>
+    	<h5> ${orderStatus} </h5>
 		<div id="pannel">
 
 			<a href="restraunt?name=habib" name="habib">

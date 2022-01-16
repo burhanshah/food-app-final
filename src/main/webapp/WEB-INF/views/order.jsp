@@ -28,7 +28,7 @@
 					<li><a href="home">Home</a></li>
 					<li><a href="#">Restaurants</a></li>
 					<li><a href="#">Categories</a></li>
-					<li><a href="#">Contact Us</a></li>
+					<li><a href="home#client">Contact Us</a></li>
 				</ul>
 			</div>
 
@@ -46,8 +46,7 @@
 
 			<div>
 				<h1>Your order details</h1>
-				<h4>From Restaurant - ${order.getResName()} </h4>
-				<h4>Order Id - ${order.getOrderId()} </h4>
+				<h4>From Restaurant - ${sessionScope['order'].getResName()} </h4>
 			</div>
 
 
@@ -64,8 +63,8 @@
 
 
 			<span class="catg">VEG :</span>
-
-			<c:forEach items="${order.getOrderItems().getVeg() }" var="m">
+			
+			<c:forEach items="${sessionScope['order'].getOrderItems().getVeg() }" var="m">
 
 				<div id="menu_tab">
 					<div>${ m.getName() }</div>
@@ -75,7 +74,7 @@
 			</c:forEach>
 
 			<span class="catg">NonVeg :</span>
-			<c:forEach items="${order.getOrderItems().getNonveg() }" var="m"
+			<c:forEach items="${sessionScope['order'].getOrderItems().getNonveg() }" var="m"
 				varStatus="count">
 				<div id="menu_tab">
 					<div>${ m.getName() }</div>
@@ -85,7 +84,7 @@
 			</c:forEach>
 
 			<span class="catg">Bread :</span>
-			<c:forEach items="${order.getOrderItems().getBread() }" var="m">
+			<c:forEach items="${sessionScope['order'].getOrderItems().getBread() }" var="m">
 				<div id="menu_tab">
 					<div>${ m.getName() }</div>
 					<div>${ m.getPrice() }</div>
@@ -94,7 +93,7 @@
 			</c:forEach>
 
 			<span class="catg">Beverages :</span>
-			<c:forEach items="${order.getOrderItems().getBeverage() }" var="m">
+			<c:forEach items="${sessionScope['order'].getOrderItems().getBeverage() }" var="m">
 				<div id="menu_tab">
 					<div>${ m.getName() }</div>
 					<div>${ m.getPrice() }</div>
@@ -107,10 +106,9 @@
 			<div>Delivery Instruction: <input type="text" value="" name="comments"></div>
 
 			<div class="btn">
-				<div>Total Amount : ${order.getTotalPrice()} </div>
+				<div>Total Amount : ${sessionScope['order'].getTotalPrice()} </div>
 				<input type="submit" onClick="checkOut()" value="Checkout"> 
 				<input type="button"value="Cancel">
-				<input type="hidden"  value='${order.getOrderId()}' name="orderId">
 			</div>
 		</section>
 	</form>
